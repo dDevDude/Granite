@@ -48,6 +48,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Respond with different formats
+  gem "responders"
 end
 
 group :development do
