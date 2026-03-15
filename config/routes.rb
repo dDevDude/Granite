@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get "up" => "rails/health#show", as: :rails_health_check
-
   resources :tasks, only: %i[index]
+
+  root "home#index"
+  get "*path", to: "home#index", via: :all
 end
