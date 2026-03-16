@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_16_174135) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_16_180647) do
   create_table "tasks", force: :cascade do |t|
     t.integer "assigned_user_id"
     t.datetime "created_at", null: false
@@ -21,6 +21,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_174135) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "authentication_token"
     t.datetime "created_at", null: false
     t.string "email", null: false
     t.string "name", null: false
