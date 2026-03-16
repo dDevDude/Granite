@@ -55,6 +55,8 @@ group :development, :test do
   # For code formatting and linting
   gem "rubocop", require: false
   gem "rubocop-rails", require: false
+
+  gem "data_migrate"
 end
 
 group :development do
