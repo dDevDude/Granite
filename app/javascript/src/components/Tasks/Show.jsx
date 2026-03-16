@@ -48,13 +48,15 @@ const Show = () => {
               </p>
             </div>
           </div>
-          <Button
-            buttonText="Edit"
-            icon="edit-line"
-            size="small"
-            style="secondary"
-            onClick={updateTask}
-          />
+          <div className="flex items-center justify-end gap-x-3">
+            <Button
+              buttonText="Edit"
+              icon="edit-line"
+              size="small"
+              style="secondary"
+              onClick={updateTask}
+            />
+          </div>
         </div>
       </div>
     </Container>
