@@ -75,5 +75,6 @@ gem "connection_pool", "~> 2.4"
 gem "react-rails", "~> 2.7.1"
 
 # Add Sprockets
+gem "bcrypt", "~> 3.1.13"
 gem "sprockets"
 gem "sprockets-rails"
