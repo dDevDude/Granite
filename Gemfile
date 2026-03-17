@@ -76,5 +76,6 @@ gem "react-rails", "~> 2.7.1"
 
 # Add Sprockets
 gem "bcrypt", "~> 3.1.13"
+gem "simplecov", require: false, group: :test
 gem "sprockets"
 gem "sprockets-rails"
