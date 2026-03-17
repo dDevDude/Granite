@@ -1,35 +1,38 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
   protect_from_forgery
   before_action :authenticate_user_using_x_auth_token
 
   rescue_from StandardError, with: :handle_api_exception
-
-  def handle_api_exception(exception)
-    case exception
-    when -> (e) { e.message.include?("PG::") || e.message.include?("SQLite3::") }
-      handle_database_level_exception(exception)
-
-    when ActionController::ParameterMissing
-      render_error(exception, :internal_server_error)
-
-    when ActiveRecord::RecordNotFound
-      render_error("Couldn't find #{exception.model}", :not_found)
-
-    when ActiveRecord::RecordNotUnique
-      render_error(exception.message)
-
-    when ActiveModel::ValidationError, ActiveRecord::RecordInvalid, ArgumentError
-      error_message = exception.message.gsub("Validation failed: ", "")
-      render_error(error_message, :unprocessable_entity)
-
-    else
-      handle_generic_exception(exception)
-    end
-  end
+  rescue_from Pundit::NotAuthorizedError, with: :handle_authorization_error
 
   private
+
+    def handle_api_exception(exception)
+      case exception
+      when -> (e) { e.message.include?("PG::") || e.message.include?("SQLite3::") }
+        handle_database_level_exception(exception)
+
+      when ActionController::ParameterMissing
+        render_error(exception, :internal_server_error)
+
+      when ActiveRecord::RecordNotFound
+        render_error("Couldn't find #{exception.model}", :not_found)
+
+      when ActiveRecord::RecordNotUnique
+        render_error(exception.message)
+
+      when ActiveModel::ValidationError, ActiveRecord::RecordInvalid, ArgumentError
+        error_message = exception.message.gsub("Validation failed: ", "")
+        render_error(error_message, :unprocessable_entity)
+
+      else
+        handle_generic_exception(exception)
+      end
+    end
 
     def handle_database_level_exception(exception)
       handle_generic_exception(exception, :unprocessable_entity)
@@ -81,5 +84,9 @@ class ApplicationController < ActionController::Base
 
     def current_user
       @current_user
+    end
+
+    def handle_authorization_error
+      render_error(t("authorization.denied"), :forbidden)
     end
 end

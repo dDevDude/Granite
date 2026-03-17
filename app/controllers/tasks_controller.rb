@@ -2,28 +2,36 @@
 
 class TasksController < ApplicationController
   before_action :load_task!, only: %i[show update destroy]
+  # ensure authorize is called for every action in cased if missed.
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   def index
-    tasks = Task.all.as_json(include: { assigned_user: { only: %i[id name] } })
-    render status: :ok, json: { tasks: }
+    # tasks = TaskPolicy::Scope.new(current_user, Task).resolve
+    tasks = policy_scope(Task)
+    task_with_assigned_user = tasks.as_json(include: { assigned_user: { only: %i[id name] } })
+    render_json({ tasks: task_with_assigned_user })
   end
 
   def create
     task = current_user.created_tasks.new(task_params)
+    authorize task
     task.save!
     render_notice(t("successfully_created", entity: "Task"))
   end
 
   def show
-    render
+    authorize @task
   end
 
   def update
+    authorize @task
     @task.update!(task_params)
     render_notice(t("successfully_updated", entity: "Task"))
   end
 
   def destroy
+    authorize @task
     @task.destroy!
     render_json
   end
