@@ -57,6 +57,12 @@ group :development, :test do
   gem "rubocop-rails", require: false
 
   gem "data_migrate"
+
+  # Rails integration for factory_bot, a replacement for fixtures
+  gem "factory_bot_rails"
+
+  # For auto-generating demo data
+  gem "faker"
 end
 
 group :development do
