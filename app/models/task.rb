@@ -5,6 +5,7 @@ class Task < ApplicationRecord
   VALID_TITLE_REGEX = /\A.*[a-zA-Z0-9].*\z/i
 
   belongs_to :assigned_user, class_name: "User", foreign_key: "assigned_user_id"
+  belongs_to :task_owner, class_name: "User", foreign_key: "task_owner_id"
 
   validates :title,
     presence: true,

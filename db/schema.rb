@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_16_180647) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_17_060330) do
   create_table "tasks", force: :cascade do |t|
     t.integer "assigned_user_id"
     t.datetime "created_at", null: false
     t.string "slug", null: false
+    t.integer "task_owner_id"
     t.text "title", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_tasks_on_slug", unique: true
@@ -31,4 +32,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_180647) do
   end
 
   add_foreign_key "tasks", "users", column: "assigned_user_id"
+  add_foreign_key "tasks", "users", column: "task_owner_id", on_delete: :cascade
 end
