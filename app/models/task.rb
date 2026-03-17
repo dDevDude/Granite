@@ -6,6 +6,7 @@ class Task < ApplicationRecord
 
   belongs_to :assigned_user, class_name: "User", foreign_key: "assigned_user_id"
   belongs_to :task_owner, class_name: "User", foreign_key: "task_owner_id"
+  has_many :comments, dependent: :destroy
 
   validates :title,
     presence: true,
